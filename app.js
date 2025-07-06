@@ -16,7 +16,9 @@ const app = express();
 app.use(helmet());
 
 // CORS configuration
-app.use(cors());
+app.use(cors(
+  {origin: 'https://test-frontend-qw3f.vercel.app' || 'http://localhost:5173'}
+));
 
 // Logging middleware
 app.use(morgan('combined'));
