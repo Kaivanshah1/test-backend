@@ -16,9 +16,25 @@ const app = express();
 app.use(helmet());
 
 // CORS configuration
-app.use(cors(
-  {origin: 'https://test-frontend-qw3f.vercel.app' || 'http://localhost:5173'}
-));
+const allowedOrigins = [
+  'https://test-frontend-qw3f.vercel.app',
+  'http://localhost:5173',
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps, curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // only if you're using cookies or Authorization headers
+};
+
+app.use(cors(corsOptions));
+
 
 // Logging middleware
 app.use(morgan('combined'));
